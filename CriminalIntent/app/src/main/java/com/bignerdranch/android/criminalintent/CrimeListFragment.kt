@@ -70,6 +70,7 @@ class CrimeListFragment : Fragment() {
             this.crime = crime
             titleTextView.text = this.crime.title
             dateTextView.text = this.crime.date.toString()
+            // add requiresPolice
         }
 
         override fun onClick(v: View) {
