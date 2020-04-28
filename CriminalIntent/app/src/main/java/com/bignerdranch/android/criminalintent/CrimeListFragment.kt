@@ -68,10 +68,21 @@ class CrimeListFragment : Fragment() {
             itemView.setOnClickListener(this)
         }
 
+        fun formatDate(date: String) {
+
+            return
+        }
+
         fun bind(crime: Crime) {
             this.crime = crime
             titleTextView.text = this.crime.title
-            dateTextView.text = this.crime.date.toString()
+
+            // format date
+            val days = mapOf("Mon" to "Monday", "Tues" to "Tuesday", "Wed" to "Wednesday",
+                "Thurs" to "Thursday", "Fri" to "Friday")
+            val strs: List<String> = this.crime.date.toString().split(" ")
+            dateTextView.text = days[strs[0]] + ", " + strs[1] + " " + strs[2] + ", " + strs[5]
+
             solvedImageView.visibility = if (crime.isSolved) {
                 View.VISIBLE
             } else {
