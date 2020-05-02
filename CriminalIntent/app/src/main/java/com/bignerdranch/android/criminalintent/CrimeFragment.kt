@@ -2,6 +2,7 @@ package com.bignerdranch.android.criminalintent
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.format.DateFormat
@@ -21,6 +22,7 @@ private const val TAG = "CrimeFragment"
 private const val ARG_CRIME_ID = "crime_id"
 private const val DIALOG_DATE = "DialogDate"
 private const val REQUEST_DATE = 0
+private const val REQUEST_CONTACT = 1
 private const val DATE_FORMAT = "EEE, MMM, dd"
 
 class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
@@ -30,6 +32,7 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
     private lateinit var dateButton: Button
     private lateinit var solvedCheckBox: CheckBox
     private lateinit var reportButton: Button
+    private lateinit var suspectButton: Button
     private val crimeDetailViewModel: CrimeDetailViewModel by lazy {
         ViewModelProviders.of(this).get(CrimeDetailViewModel::class.java)
     }
@@ -52,6 +55,7 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
         dateButton = view.findViewById(R.id.crime_date) as Button
         solvedCheckBox = view.findViewById(R.id.crime_solved) as CheckBox
         reportButton = view.findViewById(R.id.crime_report) as Button
+        suspectButton = view.findViewById(R.id.crime_suspect) as Button
         return view
     }
 
@@ -122,6 +126,14 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
             }
         }
 
+        suspectButton.apply {
+            val pickContactIntent =
+                Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI)
+            setOnClickListener {
+                startActivityForResult(pickContactIntent, REQUEST_CONTACT)
+            }
+        }
+
     }
 
     override fun onStop() {
@@ -140,6 +152,9 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
         solvedCheckBox.apply {
             isChecked = crime.isSolved
             jumpDrawablesToCurrentState()
+        }
+        if (crime.suspect.isNotEmpty()) {
+            suspectButton.text = crime.suspect
         }
     }
 
