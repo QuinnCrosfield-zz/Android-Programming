@@ -205,6 +205,7 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
         if (crime.suspect.isNotEmpty()) {
             suspectButton.text = crime.suspect
         }
+        updatePhotoView()
     }
 
     private fun updatePhotoView() {
@@ -243,6 +244,9 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
                     crimeDetailViewModel.saveCrime(crime)
                     suspectButton.text = suspect
                 }
+            }
+            requestCode == REQUEST_PHOTO -> {
+                updatePhotoView()
             }
         }
     }
