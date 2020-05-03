@@ -28,6 +28,13 @@ class NerdLauncherActivity : AppCompatActivity() {
             addCategory(Intent.CATEGORY_LAUNCHER)
         }
         val activities = packageManager.queryIntentActivities(startupIntent, 0)
+        activities.sortWith(Comparator { a, b ->
+            String.CASE_INSENSITIVE_ORDER.compare(
+                a.loadLabel(packageManager).toString(),
+                b.loadLabel(packageManager).toString()
+            )
+        })
+        
         Log.i(TAG, "Found ${activities.size} activities")
     }
 }
