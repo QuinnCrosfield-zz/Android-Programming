@@ -41,6 +41,7 @@ class NerdLauncherActivity : AppCompatActivity() {
         })
 
         Log.i(TAG, "Found ${activities.size} activities")
+        recyclerView.adapter = ActivityAdapter(activities)
     }
 
     private class ActivityHolder(itemView: View) :
