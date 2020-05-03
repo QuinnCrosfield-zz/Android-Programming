@@ -5,6 +5,12 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Point
 
+fun getScaledBitmap(path: String, activity: Activity): Bitmap {
+    val size = Point()
+    activity.windowManager.defaultDisplay.getSize(size)
+    return getScaledBitmap(path, size.x, size.y)
+}
+
 fun getScaledBitmap(path: String, destWidth: Int, destHeight: Int): Bitmap {
 
     // Read in the dimensions of the image on disk
@@ -33,10 +39,4 @@ fun getScaledBitmap(path: String, destWidth: Int, destHeight: Int): Bitmap {
 
     // Read in and create final bitmap
     return BitmapFactory.decodeFile(path, options)
-}
-
-fun getScaledBitmap(path: String, activity: Activity): Bitmap {
-    val size = Point()
-    activity.windowManager.defaultDisplay.getSize(size)
-    return getScaledBitmap(path, size.x, size.y)
 }
