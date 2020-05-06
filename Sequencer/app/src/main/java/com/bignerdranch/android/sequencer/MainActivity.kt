@@ -1,5 +1,6 @@
 package com.bignerdranch.android.sequencer
 
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -13,6 +14,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bpmView: TextView
     private lateinit var seekBar: SeekBar
     private lateinit var playButton: ImageButton
+    private lateinit var click: MediaPlayer
     private var bpm: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,6 +25,10 @@ class MainActivity : AppCompatActivity() {
         bpmView = findViewById(R.id.bpm_view)
         seekBar = findViewById(R.id.seek_bar)
         playButton = findViewById(R.id.play_button)
+        click = MediaPlayer.create(this, R.raw.click)
+
+        // test sound
+        click.start()
 
         seekBar?.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
@@ -43,6 +49,7 @@ class MainActivity : AppCompatActivity() {
 
         playButton.setOnClickListener {view: View ->
             // do something
+
         }
     }
 
