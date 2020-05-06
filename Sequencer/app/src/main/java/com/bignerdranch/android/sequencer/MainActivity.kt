@@ -2,6 +2,8 @@ package com.bignerdranch.android.sequencer
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.SeekBar
 import android.widget.TextView
@@ -10,6 +12,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var bpmView: TextView
     private lateinit var seekBar: SeekBar
+    private lateinit var playButton: ImageButton
+    private var bpm: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,12 +22,14 @@ class MainActivity : AppCompatActivity() {
         // retrieve references
         bpmView = findViewById(R.id.bpm_view)
         seekBar = findViewById(R.id.seek_bar)
+        playButton = findViewById(R.id.play_button)
 
         seekBar?.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seek: SeekBar, progress: Int, fromUser: Boolean) {
                 // write custom code for progress is changed
-                bpmView.text = "" + progress
+                bpm = progress
+                bpmView.text = "" +  bpm
             }
 
             override fun onStartTrackingTouch(seek: SeekBar) {
@@ -34,6 +40,10 @@ class MainActivity : AppCompatActivity() {
                 // write custom code for progress is stopped
             }
         })
+
+        playButton.setOnClickListener {view: View ->
+            // do something
+        }
     }
 
 
