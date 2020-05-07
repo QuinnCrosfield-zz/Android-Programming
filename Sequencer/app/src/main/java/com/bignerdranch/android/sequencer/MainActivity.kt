@@ -3,19 +3,23 @@ package com.bignerdranch.android.sequencer
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.SeekBar
 import android.widget.TextView
+import java.util.*
+import kotlin.concurrent.timerTask
+
+private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var bpmView: TextView
     private lateinit var seekBar: SeekBar
     private lateinit var playButton: ImageButton
-    private lateinit var pauseButton: ImageButton
-    private lateinit var stopButton: ImageButton
+    private lateinit var met: Metronome
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,18 +29,13 @@ class MainActivity : AppCompatActivity() {
         bpmView = findViewById(R.id.bpm_view)
         seekBar = findViewById(R.id.seek_bar)
         playButton = findViewById(R.id.play_button)
-        pauseButton = findViewById(R.id.pause_button)
-        stopButton = findViewById(R.id.stop_button)
-
-
-        // create metronome
-        var met = Metronome()
+        met = Metronome
 
         seekBar?.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seek: SeekBar, progress: Int, fromUser: Boolean) {
-                met.setBpm(progress)
-                bpmView.text = "" +  progress
+                met.setBpm(progress+1)
+                bpmView.text = "" +  (progress + 1)
             }
 
             override fun onStartTrackingTouch(seek: SeekBar) {
@@ -50,45 +49,56 @@ class MainActivity : AppCompatActivity() {
 
         playButton.setOnClickListener {view: View ->
             if (! met.isRunning()) {
-                val t = Thread(met)
-                t.start()
-                // met.run()
+                Log.d(TAG, "is running")
+                met.run()
+
+                // change to stop button
+                playButton.setBackgroundResource(R.drawable.ic_stop);
+            } else {
+                Log.d(TAG, "met stopped")
+                met.end()
+
+                // change to stop button
+                playButton.setBackgroundResource(R.drawable.ic_play);
             }
-        }
-
-        pauseButton.setOnClickListener {view: View ->
-            // met.pause()
-        }
-
-        stopButton.setOnClickListener {view: View ->
-            met.stop()
         }
     }
 
-    class Metronome : Thread() {
+}
 
-        private var running: Boolean = false
-        private lateinit var click: MediaPlayer
-        private var bpm: Int = 0
+object Metronome {
 
-        fun Metronome(){
-            this.running = true
-        }
+    private lateinit var click: MediaPlayer
+    private lateinit var metronome: Timer
+    private var running: Boolean
+    private var bpm: Int
 
-        override fun run() {
-            while (running) {
-                click.start()
-                Thread.sleep(((1000*(60.0/bpm)).toLong()))
-            }
-        }
-
-        public fun end() { running = false }
-
-        fun setBpm(bpm: Int){ this.bpm = bpm }
-        fun getBpm(): Int { return this.bpm }
-        fun isRunning(): Boolean {return this.running}
+    init {
+        metronome = Timer("metronome", true)
+        running = false
+        bpm = 1
     }
 
+    fun Metronome(){ this.running = true }
 
+    fun run(): Boolean {
+        if (running) {
+            return false
+        } else {
+            metronome.schedule(
+                timerTask {
+                    click.start()
+                    click.stop()
+                },
+                0L,
+                (((1000*(60.0/bpm)).toLong()))
+            )
+            return true
+        }
+    }
 
+    fun end() { running = false }
+    fun isRunning(): Boolean {return this.running}
+    fun setBpm(bpm: Int){ this.bpm = bpm }
+    fun getBpm(): Int { return this.bpm }
 }
