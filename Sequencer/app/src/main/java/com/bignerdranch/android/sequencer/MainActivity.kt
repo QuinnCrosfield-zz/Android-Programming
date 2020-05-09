@@ -87,6 +87,7 @@ object Metronome {
         } else {
             metronome.schedule(
                 timerTask {
+                    Log.d(TAG, "tic")
                     click.start()
                     click.stop()
                 },
