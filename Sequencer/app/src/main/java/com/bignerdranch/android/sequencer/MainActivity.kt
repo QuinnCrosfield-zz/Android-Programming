@@ -1,5 +1,6 @@
 package com.bignerdranch.android.sequencer
 
+import android.content.Context
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -30,12 +31,18 @@ class MainActivity : AppCompatActivity() {
         seekBar = findViewById(R.id.seek_bar)
         playButton = findViewById(R.id.play_button)
         met = Metronome
+        met.setContext(this)
+
+        // init seek bar values
+        seekBar.setMax(300)
+        seekBar.setProgress(100)
+
 
         seekBar?.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seek: SeekBar, progress: Int, fromUser: Boolean) {
-                met.setBpm(progress+1)
-                bpmView.text = "" +  (progress + 1)
+                met.setBpm(progress)
+                bpmView.text = "" +  (progress)
             }
 
             override fun onStartTrackingTouch(seek: SeekBar) {
@@ -54,42 +61,50 @@ class MainActivity : AppCompatActivity() {
 
                 // change to stop button
                 playButton.setBackgroundResource(R.drawable.ic_stop);
+
             } else {
                 Log.d(TAG, "met stopped")
                 met.end()
 
                 // change to stop button
                 playButton.setBackgroundResource(R.drawable.ic_play);
+
             }
         }
     }
 
-}
-
 object Metronome {
 
     private lateinit var click: MediaPlayer
-    private lateinit var metronome: Timer
+    private var metronome: Timer
+    private lateinit var context: Context
     private var running: Boolean
     private var bpm: Int
 
     init {
         metronome = Timer("metronome", true)
         running = false
-        bpm = 1
+        bpm = 100
     }
 
-    fun Metronome(){ this.running = true }
+
+    fun Metronome(){ }
+
+    fun setContext(context: Context){
+        this.context = context
+        click = MediaPlayer.create(Metronome.context, R.raw.click)
+    }
 
     fun run(): Boolean {
         if (running) {
             return false
         } else {
+            running = true
+            metronome = Timer("metronome", true)
             metronome.schedule(
                 timerTask {
                     Log.d(TAG, "tic")
                     click.start()
-                    click.stop()
                 },
                 0L,
                 (((1000*(60.0/bpm)).toLong()))
@@ -98,8 +113,14 @@ object Metronome {
         }
     }
 
-    fun end() { running = false }
+    fun end() {
+        metronome.cancel()
+        running = false
+    }
     fun isRunning(): Boolean {return this.running}
     fun setBpm(bpm: Int){ this.bpm = bpm }
     fun getBpm(): Int { return this.bpm }
+
+}
+
 }
