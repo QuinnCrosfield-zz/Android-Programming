@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
-import android.widget.ProgressBar
 import android.widget.SeekBar
 import android.widget.TextView
 import java.util.*
@@ -20,6 +20,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bpmView: TextView
     private lateinit var seekBar: SeekBar
     private lateinit var playButton: ImageButton
+    private lateinit var bottleButton: Button
+    private lateinit var clickButton: Button
+    private lateinit var tamborineButton: Button
     private lateinit var met: Metronome
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,8 +33,8 @@ class MainActivity : AppCompatActivity() {
         bpmView = findViewById(R.id.bpm_view)
         seekBar = findViewById(R.id.seek_bar)
         playButton = findViewById(R.id.play_button)
-        met = Metronome
-        met.setContext(this)
+        met = Metronome(this)
+        // met.setContext(this)
 
         // init seek bar values
         seekBar.setMax(300)
@@ -73,27 +76,27 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-object Metronome {
+class Metronome(mainActivity: MainActivity) {
 
     private lateinit var click: MediaPlayer
     private var metronome: Timer
     private lateinit var context: Context
     private var running: Boolean
     private var bpm: Int
+    private var audio: Int
 
     init {
         metronome = Timer("metronome", true)
         running = false
         bpm = 100
+        audio = R.raw.click
     }
 
-
-    fun Metronome(){ }
-
-    fun setContext(context: Context){
+    fun Metronome(context: Context){
         this.context = context
-        click = MediaPlayer.create(Metronome.context, R.raw.click)
+        click = MediaPlayer.create(context, audio)
     }
+
 
     fun run(): Boolean {
         if (running) {
@@ -117,8 +120,10 @@ object Metronome {
         metronome.cancel()
         running = false
     }
+
     fun isRunning(): Boolean {return this.running}
     fun setBpm(bpm: Int){ this.bpm = bpm }
+    fun setAudio(audio: Int){this.audio = audio}
     fun getBpm(): Int { return this.bpm }
 
 }

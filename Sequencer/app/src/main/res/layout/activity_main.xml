@@ -10,21 +10,53 @@
 
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/audiotypes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/play"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/bottle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bottle" />
+
+        <Button
+            android:id="@+id/click"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Click" />
+
+        <Button
+            android:id="@+id/tamborine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tamborine" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/play"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="500dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="360dp"
+        android:layout_marginBottom="16dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintStart_toStartOf="@id/audiotypes"
+        app:layout_constraintTop_toBottomOf="@id/audiotypes">
 
         <TextView
             android:id="@+id/bpm_view"
@@ -36,7 +68,8 @@
         <SeekBar
             android:id="@+id/seek_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:progress="33" />
 
         <ImageButton
             android:id="@+id/play_button"
@@ -44,7 +77,7 @@
             android:layout_height="match_parent"
             android:src="@drawable/ic_play" />
 
-    </LinearLayout>
 
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
