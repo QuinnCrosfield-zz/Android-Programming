@@ -24,19 +24,19 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/bottle"
+            android:id="@+id/bottle_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Bottle" />
 
         <Button
-            android:id="@+id/click"
+            android:id="@+id/click_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Click" />
 
         <Button
-            android:id="@+id/tamborine"
+            android:id="@+id/tamborine_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tamborine" />

@@ -33,8 +33,12 @@ class MainActivity : AppCompatActivity() {
         bpmView = findViewById(R.id.bpm_view)
         seekBar = findViewById(R.id.seek_bar)
         playButton = findViewById(R.id.play_button)
+        bottleButton = findViewById(R.id.bottle_button)
+        clickButton = findViewById(R.id.click_button)
+        tamborineButton = findViewById(R.id.tamborine_button)
+
+        // initialize met
         met = Metronome(this)
-        // met.setContext(this)
 
         // init seek bar values
         seekBar.setMax(300)
@@ -73,6 +77,27 @@ class MainActivity : AppCompatActivity() {
                 playButton.setBackgroundResource(R.drawable.ic_play);
 
             }
+        }
+
+        clickButton.setOnClickListener { view: View ->
+            met.setAudio(R.raw.click)
+            clickButton.setEnabled(false)
+            bottleButton.setEnabled(true)
+            tamborineButton.setEnabled(true)
+        }
+
+        bottleButton.setOnClickListener { view: View ->
+            met.setAudio(R.raw.bottle)
+            bottleButton.setEnabled(false)
+            clickButton.setEnabled(true)
+            tamborineButton.setEnabled(true)
+        }
+
+        tamborineButton.setOnClickListener { view: View ->
+            met.setAudio(R.raw.tamborine)
+            tamborineButton.setEnabled(false)
+            bottleButton.setEnabled(true)
+            clickButton.setEnabled(true)
         }
     }
 
